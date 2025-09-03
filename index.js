@@ -7,7 +7,7 @@ app.use(express.static("public"));
 app.use(bodyParser.urlencoded({ extended: true }));
 
 const mongoose = require("mongoose");
-const mongoURI = "mongodb+srv://myUser:xkkm2SOqWvgGjh62@cluster0.tdo19qb.mongodb.net/";
+const mongoURI = "mongodb+srv://myUser:xkkm2SOqWvgGjh62@cluster0.tdo19qb.mongodb.net/todosDB";
 
 
 const todoSchema = new mongoose.Schema({
