@@ -7,7 +7,8 @@ app.use(express.static("public"));
 app.use(bodyParser.urlencoded({ extended: true }));
 
 const mongoose = require("mongoose");
-mongoose.connect('mongodb://localhost:27017/todoDB', { useNewUrlParser: true, useUnifiedTopology: true });
+const mongoURI = "mongodb+srv://myUser:xkkm2SOqWvgGjh62@cluster0.tdo19qb.mongodb.net/";
+
 
 const todoSchema = new mongoose.Schema({
   task: String,
