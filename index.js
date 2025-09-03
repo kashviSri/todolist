@@ -7,8 +7,19 @@ app.use(express.static("public"));
 app.use(bodyParser.urlencoded({ extended: true }));
 
 const mongoose = require("mongoose");
-const mongoURI = "mongodb+srv://myUser:xkkm2SOqWvgGjh62@cluster0.tdo19qb.mongodb.net/todoDB?retryWrites=true&w=majority&appName=Cluster0";
-
+const mongoURI = "mongodb+srv://myUser:kashvi12345@cluster0.tdo19qb.mongodb.net/todoDB?retryWrites=true&w=majority";
+mongoose.set("bufferCommands", false);
+mongoose.connect(mongoURI, {
+    useNewUrlParser: true,
+    useUnifiedTopology: true
+})
+.then(() => {
+    console.log('MongoDB connected successfully.');
+})
+.catch(err => {
+    console.error('MongoDB connection error:', err);
+    process.exit(1);
+});
 const todoSchema = new mongoose.Schema({
   task: String,
   priority: { type: String, default: "Normal" },
