@@ -5,9 +5,22 @@ const app = express();
 app.set("view engine", "ejs");
 app.use(express.static("public"));
 app.use(bodyParser.urlencoded({ extended: true }));
+app.use(express.json());
 
-const mongoose = require("mongoose");
-mongoose.connect('mongodb://localhost:27017/todoDB', { useNewUrlParser: true, useUnifiedTopology: true });
+const mongoose = require('mongoose');
+const mongoURI = "mongodb+srv://myUser:kashvi12345@cluster0.tdo19qb.mongodb.net/todoDB?retryWrites=true&w=majority";
+mongoose.set("bufferCommands", false);
+mongoose.connect(mongoURI, {
+    useNewUrlParser: true,
+    useUnifiedTopology: true
+})
+.then(() => {
+    console.log('MongoDB connected successfully.');
+})
+.catch(err => {
+    console.error('MongoDB connection error:', err);
+    process.exit(1);
+});
 
 const todoSchema = new mongoose.Schema({
   task: String,
@@ -29,6 +42,7 @@ app.get('/', async (req, res) => {
     selectedPriority: filter
   });
 });
+
 
 app.post('/', async (req, res) => {
   const { task, priority } = req.body;
@@ -124,5 +138,4 @@ const port = process.env.PORT || 8000;
 app.listen(port, () => {
   console.log(`Server is running on port ${port}`);
 });
-
 
