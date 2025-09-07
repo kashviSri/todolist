@@ -90,9 +90,39 @@ app.post('/delete', async (req, res) => {
   res.redirect('/');
 });
 
-const PORT = process.env.PORT || 3000;
-
-app.listen(PORT, () => {
-  console.log(`Server running on port ${PORT}`);
+app.put("/todos/:id", async (req, res) => {
+  const id = req.params.id;
+  const { task } = req.body;   // take task from JSON body
+  try {
+    const updatedTodo = await Todo.findByIdAndUpdate(
+      id,
+      { task: task },
+      { new: true }  // return the updated todo, not the old one
+    );
+    if (!updatedTodo) {
+      return res.status(404).send("Todo not found");
+    }
+    res.json(updatedTodo);
+  } catch (err) {
+    res.status(400).send("Error updating todo");
+  }
 });
+
+
+app.delete("/todos/:id", async (req, res) => {
+  const id = req.params.id;
+  await Todo.findByIdAndDelete(id);
+  res.send("todo deleted");
+});
+
+app.get("/todos", async (req, res) => {
+  const todos = await Todo.find({});
+  res.json(todos);
+});
+
+const port = process.env.PORT || 8000;
+app.listen(port, () => {
+  console.log(`Server is running on port ${port}`);
+});
+
 
