@@ -105,18 +105,18 @@ app.post('/delete', async (req, res) => {
 });
 
 app.put("/todos/:id", async (req, res) => {
-  const id = req.params.id;
-  const { task } = req.body;   // take task from JSON body
   try {
-    const updatedTodo = await Todo.findByIdAndUpdate(
-      id,
-      { task: task },
-      { new: true }  // return the updated todo, not the old one
+    const result = await Todo.updateOne(
+      { _id: req.params.id },
+      { task: req.body.task, priority: req.body.priority, done: req.body.done },
+      { overwrite: true }
     );
-    if (!updatedTodo) {
-      return res.status(404).send("Todo not found");
+
+    if (result.matchedCount === 0) {
+      res.status(404).send("Todo not found");
+    } else {
+      res.send("Todo updated");
     }
-    res.json(updatedTodo);
   } catch (err) {
     res.status(400).send("Error updating todo");
   }
@@ -136,6 +136,6 @@ app.get("/todos", async (req, res) => {
 
 const port = process.env.PORT || 8000;
 app.listen(port, () => {
-  console.log(`Server is running on port ${port}`);
+  console.log('Server is running');
 });
 
